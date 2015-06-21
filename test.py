@@ -1,5 +1,6 @@
 import sys
 from PyQt4 import QtGui, QtCore
+import subprocess
 
 def GetCategories():
     categories=[]
@@ -52,6 +53,8 @@ class TalkBoard(QtGui.QWidget):
         categories=GetCategories()
 
         grid = QtGui.QGridLayout()
+	grid.setHorizontalSpacing=48
+	grid.setVerticalSpacing=48
         self.setLayout(grid)
 
         for row, category in enumerate(categories):
@@ -69,6 +72,9 @@ class TalkBoard(QtGui.QWidget):
       
         sender = self.sender()
         print sender.text() + ' was pressed'
+	sp="echo " + str(sender.text()) + " | festival --tts"
+	subprocess.call(sp, shell=True)
+	#subprocess.call('echo Hello', shell=True)
         
 def main():
     
