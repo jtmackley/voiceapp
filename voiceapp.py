@@ -1,15 +1,7 @@
 import sys
 from PyQt4 import QtGui, QtCore
 import subprocess
-
-
-#        for row, category in enumerate(categories):
-#            button = QtGui.QPushButton(category.word)
-#            self.buttonCategories.append(button)
-#            font=QtGui.QFont('Arial',16)
-#            button.setFont(font)
-#            button.clicked.connect(self.CategoryClicked)            
-#            grid.addWidget(button, row,1)
+#import voiceapp_presage
 
 class VoiceApp():
     def GetCategories(self):
@@ -68,6 +60,9 @@ class TalkBoard(QtGui.QWidget):
         self.categories=[]
         self.editmode=False
         self.text=QtGui.QTextEdit()
+        self.text.textChanged.connect(self.TextChanged)            
+#        self.Predict=voiceapp_presage.Predictions()  
+
         self.initUI()
 
     def drawCategoryButtons(self,grid):
@@ -86,6 +81,14 @@ class TalkBoard(QtGui.QWidget):
         for button in self.buttonCategories:
             if x<len(self.categories):
                 button.setText(self.categories[x].word)
+            else:
+                button.setText("")
+            x+=1
+    def PopulatePredictions(self,predictions):
+        x=0
+        for button in self.buttonPredictive:
+            if x<len(predictions):
+                button.setText(predictions[x])
             else:
                 button.setText("")
             x+=1
@@ -183,7 +186,12 @@ class TalkBoard(QtGui.QWidget):
         #self.setGeometry(300, 300, 290, 150)
         self.setWindowTitle('Voice App')
         self.show()
-        
+
+    def TextChanged(self):
+        print "Getting Predictions..."
+#        print self.Predict.GetPredictions(self.text.toPlainText())
+        #self.PopulatePredictions(self.Predict.GetPredictions(self.text.toPlainText()))
+
     def CategoryClicked(self):
         if self.editmode:
             new=self.GetNewText()
